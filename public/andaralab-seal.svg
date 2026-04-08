@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="62" viewBox="0 0 240 62">
+  <!-- AndaraLab Seal — "Powered by AndaraLab" -->
+  <!-- Para usar en el pie de la app SnapLead -->
+
+  <!-- Pill background -->
+  <rect width="240" height="62" rx="31" fill="#07142A"/>
+  <!-- Inner border -->
+  <rect x="2" y="2" width="236" height="58" rx="29" fill="none" stroke="#1C5ED6" stroke-width="1.5"/>
+
+  <!-- Lightning bolt -->
+  <polygon points="32,14 22,33 28,33 23,48 35,29 29,29 32,14" fill="#1C5ED6"/>
+
+  <!-- "powered by" -->
+  <text x="48" y="26" font-family="system-ui, sans-serif" font-size="10" font-weight="500" fill="#93C5FD">powered by</text>
+  <!-- "AndaraLab" -->
+  <text x="48" y="46" font-family="system-ui, sans-serif" font-size="18" font-weight="800" fill="#FFFFFF">AndaraLab</text>
+</svg>

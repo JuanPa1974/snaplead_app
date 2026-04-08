@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="500" height="500" viewBox="0 0 500 500">
+  <!-- SnapLead App Icon — Opción A "Scan Card" -->
+  <!-- AndaraLab · Abril 2026 -->
+
+  <!-- Background navy -->
+  <rect width="500" height="500" rx="90" fill="#0B3A82"/>
+
+  <!-- Business card -->
+  <rect x="108" y="150" width="284" height="188" rx="18" fill="#FFFFFF"/>
+
+  <!-- Avatar circle -->
+  <circle cx="147" cy="208" r="32" fill="#1C5ED6"/>
+  <circle cx="139" cy="197" r="11" fill="#3073E8" fill-opacity="0.45"/>
+
+  <!-- Name line -->
+  <rect x="194" y="186" width="170" height="14" rx="5" fill="#1C5ED6"/>
+  <!-- Role lines -->
+  <rect x="194" y="207" width="124" height="9" rx="3" fill="#CBD5E1"/>
+  <rect x="194" y="222" width="94"  height="9" rx="3" fill="#E2E8F0"/>
+
+  <!-- Scanner line -->
+  <rect x="108" y="242" width="284" height="3" fill="#3073E8" fill-opacity="0.52"/>
+
+  <!-- Divider -->
+  <rect x="124" y="260" width="252" height="2" fill="#E5E7EB"/>
+
+  <!-- Contact lines -->
+  <rect x="124" y="272" width="205" height="9" rx="3" fill="#E5E7EB"/>
+  <rect x="124" y="288" width="158" height="9" rx="3" fill="#E5E7EB"/>
+  <rect x="124" y="304" width="116" height="9" rx="3" fill="#E5E7EB"/>
+
+  <!-- Bracket TL -->
+  <rect x="28" y="28" width="62" height="9" rx="4" fill="#1C5ED6"/>
+  <rect x="28" y="28" width="9"  height="62" rx="4" fill="#1C5ED6"/>
+  <!-- Bracket TR -->
+  <rect x="410" y="28" width="62" height="9" rx="4" fill="#1C5ED6"/>
+  <rect x="463" y="28" width="9"  height="62" rx="4" fill="#1C5ED6"/>
+  <!-- Bracket BL -->
+  <rect x="28"  y="463" width="62" height="9" rx="4" fill="#1C5ED6"/>
+  <rect x="28"  y="410" width="9"  height="62" rx="4" fill="#1C5ED6"/>
+  <!-- Bracket BR -->
+  <rect x="410" y="463" width="62" height="9" rx="4" fill="#1C5ED6"/>
+  <rect x="463" y="410" width="9"  height="62" rx="4" fill="#1C5ED6"/>
+</svg>

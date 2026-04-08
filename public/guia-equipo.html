@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SnapLead · Guía del Equipo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --blue-deep: #0B3A82;
+      --blue-sec:  #1C5ED6;
+      --bg:        #F7F8FC;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: #1A1A1A;
+      padding: 0 0 40px;
+      max-width: 560px;
+      margin: 0 auto;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Header */
+    .hero {
+      background: linear-gradient(135deg, #0B3A82 0%, #1C5ED6 100%);
+      padding: 28px 20px 24px;
+      color: white;
+      text-align: center;
+    }
+    .hero-logo {
+      width: 56px; height: 56px;
+      border-radius: 14px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+      margin-bottom: 12px;
+    }
+    .hero h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 28px; font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    .hero p {
+      font-size: 13px; opacity: 0.75;
+      margin-top: 4px; letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 11px; font-weight: 600;
+      margin-top: 10px; letter-spacing: 0.05em;
+    }
+
+    /* Sections */
+    .section { padding: 20px 16px 0; }
+    .section-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 17px; font-weight: 800;
+      color: var(--blue-deep);
+      margin-bottom: 12px;
+      display: flex; align-items: center; gap: 8px;
+    }
+
+    /* Cards */
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      border: 1px solid #F0F0F0;
+    }
+    .card-title {
+      font-weight: 700; font-size: 15px;
+      color: var(--blue-deep);
+      margin-bottom: 6px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .card p { font-size: 13px; color: #555; line-height: 1.6; }
+
+    /* Steps */
+    .steps { display: flex; flex-direction: column; gap: 0; }
+    .step {
+      display: flex; gap: 14px; align-items: flex-start;
+      padding: 14px 16px;
+      background: #fff;
+      border: 1px solid #F0F0F0;
+      position: relative;
+    }
+    .step:first-child { border-radius: 16px 16px 0 0; }
+    .step:last-child  { border-radius: 0 0 16px 16px; }
+    .step + .step { border-top: none; }
+    .step-num {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--blue-sec);
+      color: #fff; font-weight: 800; font-size: 13px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 1px;
+    }
+    .step-body h4 { font-size: 14px; font-weight: 700; color: #111; margin-bottom: 3px; }
+    .step-body p  { font-size: 13px; color: #666; line-height: 1.5; }
+
+    /* Nav reference */
+    .nav-grid {
+      display: grid; grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px; margin-bottom: 10px;
+    }
+    .nav-grid-2 { grid-template-columns: 1fr 1fr; }
+    .nav-item {
+      background: #fff; border: 1px solid #E5E7EB;
+      border-radius: 12px; padding: 12px 8px;
+      text-align: center;
+    }
+    .nav-item.primary {
+      background: var(--blue-sec); border-color: var(--blue-sec); color: #fff;
+    }
+    .nav-item .icon { font-size: 20px; display: block; margin-bottom: 4px; }
+    .nav-item .name { font-size: 11px; font-weight: 700; letter-spacing: 0.05em;
+                      text-transform: uppercase; color: inherit; }
+    .nav-item p     { font-size: 11px; color: #888; margin-top: 3px; }
+    .nav-item.primary p { color: rgba(255,255,255,0.75); }
+
+    /* Tips */
+    .tip {
+      background: #EFF6FF; border-left: 3px solid var(--blue-sec);
+      border-radius: 0 10px 10px 0;
+      padding: 10px 14px; font-size: 13px; color: #1E40AF;
+      margin-bottom: 8px; line-height: 1.5;
+    }
+    .tip strong { font-weight: 700; }
+
+    /* Alert */
+    .alert {
+      background: #FFF7ED; border-left: 3px solid #F59E0B;
+      border-radius: 0 10px 10px 0;
+      padding: 10px 14px; font-size: 13px; color: #92400E;
+      margin-bottom: 8px; line-height: 1.5;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center; padding: 28px 16px 0;
+      font-size: 12px; color: #9CA3AF;
+    }
+    .footer strong { color: #6B7280; }
+  </style>
+</head>
+<body>
+
+  <!-- Hero -->
+  <div class="hero">
+    <img src="/snaplead-logo.svg" alt="SnapLead" class="hero-logo" onerror="this.style.display='none'" />
+    <h1>SnapLead</h1>
+    <p>Guía del equipo comercial</p>
+    <span class="badge">Uso interno · Goya Europa</span>
+  </div>
+
+  <!-- ¿Qué es? -->
+  <div class="section">
+    <div class="section-title">📌 ¿Qué es SnapLead?</div>
+    <div class="card">
+      <p>Aplicación para <strong>capturar leads en ferias y eventos</strong>. Fotografía tarjetas de visita y la IA extrae los datos automáticamente. También puedes introducir contactos a mano o escanear códigos QR.</p>
+    </div>
+  </div>
+
+  <!-- Flujo de uso -->
+  <div class="section">
+    <div class="section-title">🔄 Cómo capturar un lead</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h4>Elige el modo de captura</h4>
+          <p>Usa la barra superior: <strong>CÁMARA</strong> para fotografiar tarjetas, <strong>MANUAL</strong> para escribir datos, o <strong>LECTOR QR</strong> si la tarjeta tiene QR.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h4>Revisa los datos extraídos</h4>
+          <p>La IA extrae nombre, empresa, cargo, email y teléfono. Corrígelos si algo no está bien antes de continuar.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h4>Clasifica el contacto</h4>
+          <p>Indica tipo (cliente, distribuidor, horeca...), nivel de oportunidad (alta / media / baja) y próxima acción.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <h4>Guarda y continúa</h4>
+          <p>El lead queda guardado en la app. Puedes capturar el siguiente de inmediato.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navegación -->
+  <div class="section">
+    <div class="section-title">🧭 Navegación</div>
+    <p style="font-size:12px;color:#888;margin-bottom:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em">Fila superior — modos de captura</p>
+    <div class="nav-grid">
+      <div class="nav-item">
+        <span class="icon">✍️</span>
+        <span class="name">Manual</span>
+        <p>Formulario directo</p>
+      </div>
+      <div class="nav-item primary">
+        <span class="icon">📷</span>
+        <span class="name">Cámara</span>
+        <p>Foto + IA</p>
+      </div>
+      <div class="nav-item">
+        <span class="icon">⬛</span>
+        <span class="name">Lector QR</span>
+        <p>Escanea QR</p>
+      </div>
+    </div>
+    <p style="font-size:12px;color:#888;margin-bottom:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em">Fila inferior — vistas</p>
+    <div class="nav-grid nav-grid-2">
+      <div class="nav-item">
+        <span class="icon">🏠</span>
+        <span class="name">Inicio</span>
+        <p>Resumen del día</p>
+      </div>
+      <div class="nav-item">
+        <span class="icon">📊</span>
+        <span class="name">Reportes</span>
+        <p>Base de datos + Export</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Consejos -->
+  <div class="section">
+    <div class="section-title">💡 Consejos de uso</div>
+    <div class="tip"><strong>Iluminación:</strong> Para mejores resultados con la cámara, asegúrate de que haya buena luz sobre la tarjeta.</div>
+    <div class="tip"><strong>Modo manual:</strong> Si hay mucho ruido o la cámara falla, usa siempre MANUAL. Es igual de rápido.</div>
+    <div class="tip"><strong>Nivel de oportunidad:</strong> Classifica como <strong>ALTA</strong> solo si hay intención de compra clara. Esto facilita el seguimiento posterior.</div>
+    <div class="tip"><strong>Notas:</strong> Usa el campo de notas para añadir contexto de la conversación mientras lo recuerdas.</div>
+    <div class="alert"><strong>⚠️ Backup:</strong> Al final de cada jornada, exporta un backup desde INICIO → Copia de seguridad → Exportar. Los datos se guardan solo en este dispositivo.</div>
+  </div>
+
+  <!-- Exportar datos -->
+  <div class="section">
+    <div class="section-title">📤 Exportar leads al CRM</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h4>Ve a Reportes</h4>
+          <p>Pulsa el botón <strong>Exportar CSV</strong> para descargar todos los leads en formato Excel.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h4>Comparte el archivo</h4>
+          <p>Envía el CSV por WhatsApp o email al responsable comercial para importarlo al CRM.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Problemas comunes -->
+  <div class="section">
+    <div class="section-title">🔧 Problemas frecuentes</div>
+    <div class="card">
+      <div class="card-title">📷 La cámara no funciona</div>
+      <p>Abre los ajustes del navegador y permite el acceso a la cámara para esta página. Si persiste, usa el modo <strong>Manual</strong>.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">🤖 La IA no extrae bien los datos</div>
+      <p>Edita los campos manualmente y pulsa Continuar. Los datos se guardan igual. Asegúrate de tener conexión a internet.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">💾 He perdido los leads</div>
+      <p>Los datos se guardan en este dispositivo. Si borraste el navegador, usa el archivo de backup exportado previamente para restaurar.</p>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>SnapLead v1.0 · Uso exclusivo interno Goya Europa</p>
+    <p style="margin-top:6px">Desarrollado por <strong>AndaraLab</strong> · 2026</p>
+  </div>
+
+</body>
+</html>

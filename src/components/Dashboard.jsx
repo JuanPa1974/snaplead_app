@@ -214,6 +214,22 @@ const Dashboard = () => {
     fontFamily: 'Inter, system-ui, sans-serif'
   };
 
+  const dateFieldStyle = {
+    width: '100%',
+    minWidth: 0,
+    maxWidth: '100%',
+    overflow: 'hidden'
+  };
+
+  const dateInputStyle = {
+    ...inputStyle,
+    boxSizing: 'border-box',
+    minWidth: 0,
+    maxWidth: '100%',
+    appearance: 'none',
+    WebkitAppearance: 'none'
+  };
+
   const labelStyle = {
     display: 'block',
     fontSize: '14px',
@@ -272,25 +288,25 @@ const Dashboard = () => {
             />
           </div>
 
-          <div style={{ marginBottom: '16px' }}>
+          <div style={{ ...dateFieldStyle, marginBottom: '16px' }}>
             <label style={labelStyle}>{copy.startDate}</label>
             <input
               type="date"
               name="startDate"
               value={eventData.startDate}
               onChange={handleEventChange}
-              style={inputStyle}
+              style={dateInputStyle}
             />
           </div>
 
-          <div style={{ marginBottom: '18px' }}>
+          <div style={{ ...dateFieldStyle, marginBottom: '18px' }}>
             <label style={labelStyle}>{copy.endDate}</label>
             <input
               type="date"
               name="endDate"
               value={eventData.endDate}
               onChange={handleEventChange}
-              style={inputStyle}
+              style={dateInputStyle}
             />
           </div>
 

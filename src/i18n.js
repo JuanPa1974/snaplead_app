@@ -15,7 +15,7 @@ export const translations = {
     new_contact: "Nuevo Contacto",
     // Settings
     settings_title: "Ajustes API e Idioma",
-    settings_desc: "Configura tu clave de API de Google AI Studio (Gemini) para la extracción de datos.",
+    settings_desc: "La IA de Gemini se configura de forma segura en el servidor.",
     api_label: "Clave API Gemini",
     save_settings: "Guardar Ajustes",
     language_label: "Idioma",
@@ -69,7 +69,7 @@ export const translations = {
     copy_report: "Copiar Reporte",
     copied: "¡Copiado al Portapapeles!",
     no_leads_today: "No hay leads capturados hoy para resumir.",
-    missing_api: "Por favor configure la clave API de Gemini en Ajustes primero."
+    missing_api: "La IA no está configurada en el servidor. Contacta al administrador."
   },
   en: {
     app_title: "Goya",
@@ -87,7 +87,7 @@ export const translations = {
     new_contact: "New Contact Scan",
     // Settings
     settings_title: "API & Language Settings",
-    settings_desc: "Configure your Google AI Studio (Gemini) API key to enable real data extraction.",
+    settings_desc: "Gemini AI is configured securely on the server.",
     api_label: "Gemini API Key",
     save_settings: "Save Settings",
     language_label: "Language",
@@ -141,6 +141,6 @@ export const translations = {
     copy_report: "Copy Report",
     copied: "Copied to Clipboard!",
     no_leads_today: "No leads captured today to summarize.",
-    missing_api: "Please configure your Gemini API Key in Settings first."
+    missing_api: "La IA no está configurada en el servidor. Contacta al administrador."
   }
 };

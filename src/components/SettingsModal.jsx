@@ -1,30 +1,10 @@
-import React, { useState } from 'react';
-import { X, Save, Key, Globe, CheckCircle2, Edit2 } from 'lucide-react';
+import React from 'react';
+import { X, Key, Globe, CheckCircle2 } from 'lucide-react';
 import { useLanguage } from '../context/useLanguage';
-
-const HAS_ENV_KEY = Boolean(
-  import.meta.env.VITE_GEMINI_API_KEY &&
-  import.meta.env.VITE_GEMINI_API_KEY !== 'REEMPLAZA_CON_TU_API_KEY'
-);
 
 const SettingsModal = ({ onClose }) => {
   const { t, language, changeLanguage } = useLanguage();
   const isES = language === 'es';
-  const [apiKey, setApiKey] = useState(() => (
-    HAS_ENV_KEY ? '' : localStorage.getItem('geminiApiKey') || ''
-  ));
-  const [hasKey, setHasKey] = useState(() => (
-    HAS_ENV_KEY || Boolean(localStorage.getItem('geminiApiKey'))
-  ));
-  const [isEditing, setIsEditing] = useState(() => (
-    !HAS_ENV_KEY && !localStorage.getItem('geminiApiKey')
-  ));
-
-  const handleSave = () => {
-    localStorage.setItem('geminiApiKey', apiKey.trim());
-    setHasKey(true);
-    setIsEditing(false);
-  };
 
   return (
     <div
@@ -77,68 +57,19 @@ const SettingsModal = ({ onClose }) => {
 
         {/* API Key section */}
         <div className="form-group mt-6 p-5 rounded-xl border border-gray-200 bg-gray-50 shadow-inner block">
-          {HAS_ENV_KEY ? (
-            /* Key configured by admin via .env — show status only, no editing */
-            <div className="flex flex-col items-center gap-3">
-              <div className="flex items-center gap-2">
-                <CheckCircle2 size={18} className="text-green-600" />
-                <span className="text-sm font-bold text-green-700">{t('api_configured')}</span>
-              </div>
-              <p className="text-xs text-gray-400 text-center">
-                {isES
-                  ? 'Configurada por el administrador. Contacta a IT para cambiarla.'
-                  : 'Configured by administrator. Contact IT to change it.'}
-              </p>
+          <div className="flex flex-col items-center gap-3">
+            <div className="flex items-center gap-2">
+              <CheckCircle2 size={18} className="text-green-600" />
+              <span className="text-sm font-bold text-green-700">
+                {isES ? 'IA gestionada en servidor' : 'AI managed on server'}
+              </span>
             </div>
-          ) : !isEditing ? (
-            <div className="flex flex-col items-center gap-4">
-              <div className="flex items-center gap-2">
-                {hasKey ? (
-                  <>
-                    <CheckCircle2 size={18} className="text-green-600" />
-                    <span className="text-sm font-bold text-green-700">{t('api_configured')}</span>
-                  </>
-                ) : (
-                  <span className="text-sm font-bold text-red-500">{t('api_not_configured')}</span>
-                )}
-              </div>
-              <button
-                className="btn btn-secondary w-full flex justify-center gap-2 text-sm bg-white"
-                onClick={() => setIsEditing(true)}
-              >
-                <Edit2 size={16} className="text-gray-400" />
-                {t('edit_api')}
-              </button>
-            </div>
-          ) : (
-            <div>
-              <label className="form-label text-gray-700">{t('api_label')}</label>
-              <input
-                type="password"
-                className="form-input bg-white"
-                placeholder="AIzaSy..."
-                value={apiKey}
-                onChange={(e) => setApiKey(e.target.value)}
-              />
-              <div className="flex gap-2 mt-4">
-                {hasKey && (
-                  <button
-                    className="btn flex-1 bg-white border border-gray-300 text-gray-600 hover:bg-gray-50 text-sm"
-                    onClick={() => setIsEditing(false)}
-                  >
-                    {t('cancel')}
-                  </button>
-                )}
-                <button
-                  className="btn flex-1 bg-[var(--snap-blue-deep)] text-white font-semibold text-sm hover:bg-[var(--snap-blue-sec)] flex justify-center gap-2"
-                  onClick={handleSave}
-                >
-                  <Save size={16} />
-                  {t('save_settings')}
-                </button>
-              </div>
-            </div>
-          )}
+            <p className="text-xs text-gray-400 text-center">
+              {isES
+                ? 'Configurada en el servidor. Contacta al administrador para cambiarla.'
+                : 'Configured on the server. Contact the administrator to change it.'}
+            </p>
+          </div>
         </div>
 
       </div>

@@ -303,11 +303,10 @@ const QRScanner = ({ changeView, setExtractedData }) => {
               position: 'absolute', left: 0, right: 0, height: 2,
               background: 'var(--snap-blue-light)',
               boxShadow: '0 0 10px var(--snap-blue-light)',
-              animation: 'scan 2s linear infinite'
+              animation: 'scan-qr 2s linear infinite'
             }} />
           </div>
         </div>
-        <style dangerouslySetInnerHTML={{ __html: `@keyframes scan { 0%{top:4%} 50%{top:96%} 100%{top:4%} }` }} />
       </div>
 
       {/* Hidden canvas for frame processing */}

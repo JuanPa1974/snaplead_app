@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { BrainCircuit, CheckCircle2, ChevronRight, AlertTriangle } from 'lucide-react';
 import { useLanguage } from '../context/useLanguage';
+import { extractLeadData } from '../services/geminiClient';
 
 const DataExtraction = ({ image, changeView, setExtractedData }) => {
   const { t } = useLanguage();
@@ -16,66 +17,20 @@ const DataExtraction = ({ image, changeView, setExtractedData }) => {
       return;
     }
 
-    // Admin key (build-time) takes priority; localStorage only for manual override
-    const apiKey = import.meta.env.VITE_GEMINI_API_KEY || localStorage.getItem('geminiApiKey');
-    if (!apiKey || apiKey === 'REEMPLAZA_CON_TU_API_KEY') {
-      setErrorObj(t('missing_api'));
-      setIsExtracting(false);
-      return;
-    }
-
     try {
-      const base64Data = image.split(',')[1];
-      
-      const payload = {
-        contents: [{
-          parts: [
-            { text: "Extract the following details from this business card: name, company, role, email, phone, country. Return ONLY a valid JSON object." },
-            { inline_data: { mime_type: "image/jpeg", data: base64Data } }
-          ]
-        }]
-      };
+      const extractedJson = await extractLeadData(image);
 
-      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-
-      if (!response.ok) {
-        const errorBody = await response.text();
-        console.error("Gemini API Error details:", errorBody);
-        throw new Error(`API Error: ${response.status} ${response.statusText}`);
-      }
-
-      const result = await response.json();
-      const textOutput = result.candidates?.[0]?.content?.parts?.[0]?.text;
-      
-      if (textOutput) {
-        const start = textOutput.indexOf('{');
-        const end = textOutput.lastIndexOf('}');
-        if (start === -1 || end === -1) {
-          throw new Error("Invalid output format: JSON object not found");
-        }
-        
-        const jsonStr = textOutput.slice(start, end + 1);
-        const extractedJson = JSON.parse(jsonStr);
-        
-        setFormData(prev => ({
-          ...prev,
-          name: extractedJson.name || prev.name,
-          company: extractedJson.company || prev.company,
-          role: extractedJson.role || prev.role,
-          email: extractedJson.email || prev.email,
-          phone: extractedJson.phone || prev.phone,
-          country: extractedJson.country || prev.country
-        }));
-      } else {
-         setErrorObj("Failed to extract data properly. Manual entry required.");
-      }
+      setFormData(prev => ({
+        ...prev,
+        name: extractedJson.name || prev.name,
+        company: extractedJson.company || prev.company,
+        role: extractedJson.role || prev.role,
+        email: extractedJson.email || prev.email,
+        phone: extractedJson.phone || prev.phone,
+        country: extractedJson.country || prev.country
+      }));
     } catch (err) {
-      console.error("Gemini API Exception:", err);
-      setErrorObj(err.message || "Failed to contact AI service.");
+      setErrorObj(err.message || t('missing_api'));
     } finally {
       setIsExtracting(false);
     }
@@ -111,10 +66,9 @@ const DataExtraction = ({ image, changeView, setExtractedData }) => {
           <div className="mt-8 relative w-48 h-28 rounded-md overflow-hidden border border-gray-200 shadow-sm">
              <img src={image} alt="Card Preview" className="w-full h-full object-cover opacity-80" />
              <div className="absolute top-0 left-0 w-full h-[2px] bg-[var(--snap-blue-sec)] shadow-[0_0_10px_var(--snap-blue-sec)]" 
-                  style={{ animation: 'scan 2s linear infinite' }}></div>
+                  style={{ animation: 'scan-card 2s linear infinite' }}></div>
           </div>
         )}
-        <style dangerouslySetInnerHTML={{__html: `@keyframes scan { 0% { top: 0; } 50% { top: 100%; } 100% { top: 0; } }`}} />
       </div>
     );
   }

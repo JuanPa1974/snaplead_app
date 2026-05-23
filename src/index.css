@@ -250,6 +250,31 @@ h1, h2, h3, h4, h5, h6 {
   100% { box-shadow: 0 0 0 0   rgba(28, 94, 214, 0);    }
 }
 
+@keyframes spin {
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes scan-card {
+  0% { top: 0; }
+  50% { top: 100%; }
+  100% { top: 0; }
+}
+
+@keyframes scan-qr {
+  0% { top: 4%; }
+  50% { top: 96%; }
+  100% { top: 4%; }
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 /* ─── Forms ──────────────────────────────────────────────────────────── */
 .form-group {
   margin-bottom: 1rem;

@@ -12,6 +12,7 @@ import {
   Check
 } from 'lucide-react';
 import { useLanguage } from '../context/useLanguage';
+import { generateLeadReport } from '../services/geminiClient';
 
 const Reports = () => {
   const { t, language } = useLanguage();
@@ -29,24 +30,7 @@ const Reports = () => {
     noEventContext: isES
       ? 'Se generará el informe con todos los leads guardados'
       : 'The report will be generated using all saved leads',
-    aiNoOutput: isES ? 'La IA no devolvió contenido.' : 'The AI did not return any content.',
     aiFailed: isES ? 'No se pudo generar el informe.' : 'Failed to generate report.',
-    executivePrompt: isES
-      ? 'Actúa como un gerente senior de ferias y desarrollo de negocio B2B. Analiza los leads captados en este evento y genera un informe ejecutivo profesional en español.'
-      : 'Act as a senior B2B trade show and business development manager. Analyze the leads captured during this event and generate a professional executive report in English.',
-    headingsPrompt: isES
-      ? `Usa ESTRICTAMENTE estos 4 encabezados en Markdown:
-## Resumen Ejecutivo
-## Métricas Clave
-## Insights Comerciales
-## Próximas Acciones`
-      : `Use STRICTLY these 4 headings in Markdown:
-## Executive Summary
-## Key Metrics
-## Business Insights
-## Recommended Next Actions`,
-    eventContextPrompt: isES ? 'Evento activo' : 'Active event',
-    leadsPrompt: isES ? 'Estos son los leads analizados' : 'These are the analyzed leads',
     noLeadsAvailable: isES
       ? 'No hay leads guardados para generar el informe.'
       : 'There are no saved leads to generate the report.',
@@ -169,13 +153,6 @@ const Reports = () => {
   };
 
   const generateDailyReport = async () => {
-    const apiKey = localStorage.getItem('geminiApiKey');
-
-    if (!apiKey) {
-      alert(t('missing_api'));
-      return;
-    }
-
     const leadsForReport = getLeadsForReport();
 
     if (leadsForReport.length === 0) {
@@ -190,74 +167,14 @@ const Reports = () => {
     setCopied(false);
 
     try {
-      const eventBlock = hasActiveEvent
-        ? `${copy.eventContextPrompt}:
-- ${isES ? 'Nombre del evento' : 'Event name'}: ${eventContext.eventName}
-- ${isES ? 'Año' : 'Year'}: ${eventContext.eventYear}
-- ${isES ? 'Fecha de inicio' : 'Start date'}: ${formatDate(eventContext.startDate)}
-- ${isES ? 'Fecha de fin' : 'End date'}: ${formatDate(eventContext.endDate)}`
-        : `${copy.eventContextPrompt}: ${copy.eventNotConfigured}`;
+      const report = await generateLeadReport({
+        leads: leadsForReport,
+        eventContext,
+        language
+      });
 
-      const payload = {
-        contents: [
-          {
-            parts: [
-              {
-                text: `${copy.executivePrompt}
-
-${copy.headingsPrompt}
-
-${eventBlock}
-
-${copy.leadsPrompt} (${leadsForReport.length}):
-
-${JSON.stringify(
-                  leadsForReport.map((l) => ({
-                    date: new Date(l.timestamp).toLocaleDateString(),
-                    name: l.name,
-                    company: l.company,
-                    role: l.role,
-                    email: l.email,
-                    phone: l.phone,
-                    country: l.country,
-                    type: l.contact_type,
-                    interest: l.interest,
-                    opportunity: l.opportunity_level,
-                    action: l.next_action,
-                    notes: l.notes
-                  })),
-                  null,
-                  2
-                )}`
-              }
-            ]
-          }
-        ]
-      };
-
-      const response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error(`API Error: ${response.status} ${response.statusText}`);
-      }
-
-      const result = await response.json();
-      const textOutput = result.candidates?.[0]?.content?.parts?.[0]?.text;
-
-      if (textOutput) {
-        setReportResult(textOutput);
-      } else {
-        throw new Error(copy.aiNoOutput);
-      }
+      setReportResult(report);
     } catch (err) {
-      console.error(err);
       setReportError(err.message || copy.aiFailed);
     } finally {
       setIsGenerating(false);
@@ -284,14 +201,43 @@ ${JSON.stringify(
     return 'text-white/60 border-white/10 bg-transparent';
   };
 
-  const formatMarkdown = (text) => {
+  const renderInlineMarkdown = (text) => {
     if (!text) return null;
-    return text
-      .replace(/## (.*)/g, '<h3 class="text-[var(--snap-blue-deep)] font-bold text-lg mt-5 mb-2">$1</h3>')
-      .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-      .replace(/\n\n/g, '<br/><br/>')
-      .replace(/\n/g, '<br/>')
-      .replace(/\* (.*)/g, '<li class="ml-4 list-disc">$1</li>');
+
+    return text.split(/(\*\*[^*]+\*\*)/g).map((part, index) => {
+      if (part.startsWith('**') && part.endsWith('**')) {
+        return <strong key={index}>{part.slice(2, -2)}</strong>;
+      }
+      return part;
+    });
+  };
+
+  const renderReport = (text) => {
+    if (!text) return null;
+
+    return text.split('\n').map((line, index) => {
+      if (line.startsWith('## ')) {
+        return (
+          <h3 key={index} className="text-[var(--snap-blue-deep)] font-bold text-lg mt-5 mb-2">
+            {line.replace(/^##\s+/, '')}
+          </h3>
+        );
+      }
+
+      if (line.startsWith('* ')) {
+        return (
+          <li key={index} className="ml-4 list-disc">
+            {renderInlineMarkdown(line.replace(/^\*\s+/, ''))}
+          </li>
+        );
+      }
+
+      if (!line.trim()) {
+        return <br key={index} />;
+      }
+
+      return <p key={index}>{renderInlineMarkdown(line)}</p>;
+    });
   };
 
   return (
@@ -496,11 +442,6 @@ ${JSON.stringify(
                       animation: 'spin 1s linear infinite'
                     }}
                   ></div>
-                  <style
-                    dangerouslySetInnerHTML={{
-                      __html: `@keyframes spin { 100% { transform: rotate(360deg); } }`
-                    }}
-                  />
                   <p className="font-medium text-gray-500">{t('analyzing_data')}</p>
                   {!hasActiveEvent && <p className="text-xs text-gray-400">{copy.noEventContext}</p>}
                 </div>
@@ -509,10 +450,9 @@ ${JSON.stringify(
                   {reportError}
                 </div>
               ) : (
-                <div
-                  className="text-gray-700 text-sm leading-relaxed"
-                  dangerouslySetInnerHTML={{ __html: formatMarkdown(reportResult) }}
-                ></div>
+                <div className="text-gray-700 text-sm leading-relaxed">
+                  {renderReport(reportResult)}
+                </div>
               )}
             </div>
 
@@ -532,14 +472,6 @@ ${JSON.stringify(
         </div>
       )}
 
-      <style
-        dangerouslySetInnerHTML={{
-          __html: `
-            .hide-scrollbar::-webkit-scrollbar { display: none; }
-            .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-          `
-        }}
-      />
     </div>
   );
 };

@@ -202,7 +202,10 @@ const Dashboard = () => {
   };
 
   const inputStyle = {
+    boxSizing: 'border-box',
     width: '100%',
+    minWidth: 0,
+    maxWidth: '100%',
     height: '48px',
     borderRadius: '16px',
     border: '1px solid rgba(255,255,255,0.08)',
@@ -212,22 +215,6 @@ const Dashboard = () => {
     color: '#FFFFFF',
     outline: 'none',
     fontFamily: 'Inter, system-ui, sans-serif'
-  };
-
-  const dateFieldStyle = {
-    width: '100%',
-    minWidth: 0,
-    maxWidth: '100%',
-    overflow: 'hidden'
-  };
-
-  const dateInputStyle = {
-    ...inputStyle,
-    boxSizing: 'border-box',
-    minWidth: 0,
-    maxWidth: '100%',
-    appearance: 'none',
-    WebkitAppearance: 'none'
   };
 
   const labelStyle = {
@@ -288,26 +275,26 @@ const Dashboard = () => {
             />
           </div>
 
-          <div style={{ ...dateFieldStyle, marginBottom: '16px' }}>
+          <div style={{ marginBottom: '16px' }}>
             <label style={labelStyle}>{copy.startDate}</label>
             <input
               type="text"
               name="startDate"
               value={eventData.startDate}
               onChange={handleEventChange}
-              style={dateInputStyle}
+              style={inputStyle}
               placeholder="DD/MM/AAAA"
             />
           </div>
 
-          <div style={{ ...dateFieldStyle, marginBottom: '18px' }}>
+          <div style={{ marginBottom: '18px' }}>
             <label style={labelStyle}>{copy.endDate}</label>
             <input
               type="text"
               name="endDate"
               value={eventData.endDate}
               onChange={handleEventChange}
-              style={dateInputStyle}
+              style={inputStyle}
               placeholder="DD/MM/AAAA"
             />
           </div>

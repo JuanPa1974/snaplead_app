@@ -146,12 +146,14 @@ const QRScanner = ({ changeView, setExtractedData }) => {
   // ── Error state ─────────────────────────────────────────────────────
   if (status === 'error') {
     return (
-      <div className="animation-fade" style={{ textAlign: 'center', padding: '40px 20px' }}>
-        <XCircle size={48} color="#EF4444" style={{ margin: '0 auto 16px' }} />
-        <h2 style={{ color: '#0B3A82', fontFamily: 'Outfit,system-ui,sans-serif', marginBottom: '8px' }}>
+      <div className="animation-fade empty-state glass-panel" style={{ textAlign: 'center', padding: '40px 20px' }}>
+        <div className="empty-state-icon error">
+          <XCircle size={22} />
+        </div>
+        <h2 style={{ color: '#FFFFFF', fontFamily: 'Inter,system-ui,sans-serif', marginBottom: '8px' }}>
           {isES ? 'Sin acceso a cámara' : 'Camera Access Error'}
         </h2>
-        <p style={{ color: '#6B7280', fontSize: '14px', marginBottom: '24px' }}>{camError}</p>
+        <p style={{ color: '#B6C0CF', fontSize: '14px', marginBottom: '24px' }}>{camError}</p>
         <button
           className="btn btn-secondary w-full"
           onClick={() => changeView('manual')}
@@ -171,19 +173,19 @@ const QRScanner = ({ changeView, setExtractedData }) => {
     return (
       <div className="animation-fade pb-10">
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px' }}>
-          <CheckCircle2 size={28} color="var(--snap-blue-sec)" />
+          <CheckCircle2 size={28} color="var(--accent-orange)" />
           <h2 style={{
             margin: 0, fontSize: '18px', fontWeight: 800,
-            color: 'var(--snap-blue-deep)',
-            fontFamily: 'Outfit, system-ui, sans-serif'
+            color: '#FFFFFF',
+            fontFamily: 'Inter, system-ui, sans-serif'
           }}>
             {isES ? 'QR detectado' : 'QR Detected'}
           </h2>
         </div>
 
         <div style={{
-          background: '#FFFFFF', borderRadius: '20px', padding: '20px',
-          boxShadow: '0 2px 12px rgba(0,0,0,0.05)', border: '1px solid #F0F0F0',
+          background: 'rgba(42,54,71,0.78)', borderRadius: '24px', padding: '20px',
+          boxShadow: '0 18px 48px rgba(0,0,0,0.20)', border: '1px solid rgba(255,255,255,0.06)',
           marginBottom: '16px'
         }}>
           <p style={{ fontSize: '12px', color: '#9CA3AF', marginBottom: '8px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
@@ -200,8 +202,8 @@ const QRScanner = ({ changeView, setExtractedData }) => {
             </div>
           ) : (
             <p style={{
-              fontSize: '13px', color: '#374151', background: '#F9FAFB',
-              borderRadius: '8px', padding: '10px', wordBreak: 'break-all',
+              fontSize: '13px', color: '#B6C0CF', background: 'rgba(18,26,36,0.54)',
+              borderRadius: '14px', padding: '10px', wordBreak: 'break-all',
               fontFamily: 'monospace'
             }}>
               {qrResult?.slice(0, 200)}{qrResult?.length > 200 ? '…' : ''}
@@ -242,16 +244,17 @@ const QRScanner = ({ changeView, setExtractedData }) => {
       <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
         <div style={{
           width: 40, height: 40, borderRadius: '12px',
-          background: 'rgba(28,94,214,0.10)',
+          background: 'rgba(249,115,22,0.10)',
+          border: '1px solid rgba(249,115,22,0.12)',
           display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0
         }}>
-          <QrCode size={20} color="var(--snap-blue-sec)" />
+          <QrCode size={20} color="var(--accent-orange)" />
         </div>
         <div>
           <h2 style={{
             margin: 0, fontSize: '18px', fontWeight: 800,
-            color: 'var(--snap-blue-deep)',
-            fontFamily: 'Outfit, system-ui, sans-serif'
+            color: '#FFFFFF',
+            fontFamily: 'Inter, system-ui, sans-serif'
           }}>
             {isES ? 'Lector QR' : 'QR Scanner'}
           </h2>
@@ -262,10 +265,10 @@ const QRScanner = ({ changeView, setExtractedData }) => {
       </div>
 
       {/* Camera preview */}
-      <div style={{
+      <div className="qr-premium-preview" style={{
         position: 'relative', width: '100%', paddingBottom: '75%',
-        borderRadius: '20px', overflow: 'hidden',
-        background: '#000', boxShadow: '0 8px 24px rgba(0,0,0,0.20)'
+        borderRadius: '24px', overflow: 'hidden',
+        background: '#000', boxShadow: '0 20px 55px rgba(0,0,0,0.28)', border: '1px solid rgba(255,255,255,0.06)'
       }}>
         <video
           ref={videoRef}
@@ -277,11 +280,11 @@ const QRScanner = ({ changeView, setExtractedData }) => {
           position: 'absolute', inset: 0,
           display: 'flex', alignItems: 'center', justifyContent: 'center'
         }}>
-          <div style={{
+          <div className="qr-scan-frame" style={{
             width: '60%', aspectRatio: '1',
-            border: '2px solid rgba(255,255,255,0.70)',
-            borderRadius: '16px',
-            boxShadow: '0 0 0 9999px rgba(0,0,0,0.45)',
+            border: '1px solid rgba(249,115,22,0.62)',
+            borderRadius: '20px',
+            boxShadow: '0 0 0 9999px rgba(0,0,0,0.48), 0 0 34px rgba(249,115,22,0.14)',
             position: 'relative'
           }}>
             {/* Corner marks */}
@@ -289,7 +292,7 @@ const QRScanner = ({ changeView, setExtractedData }) => {
               <div key={pos} style={{
                 position: 'absolute',
                 width: 20, height: 20,
-                borderColor: 'var(--snap-blue-light)',
+                borderColor: 'var(--accent-orange)',
                 borderStyle: 'solid',
                 borderWidth: 0,
                 ...(pos === 'topLeft'     && { top: -2, left: -2,  borderTopWidth: 3, borderLeftWidth: 3,  borderTopLeftRadius: 8 }),
@@ -301,8 +304,8 @@ const QRScanner = ({ changeView, setExtractedData }) => {
             {/* Scan line */}
             <div style={{
               position: 'absolute', left: 0, right: 0, height: 2,
-              background: 'var(--snap-blue-light)',
-              boxShadow: '0 0 10px var(--snap-blue-light)',
+              background: 'var(--accent-orange)',
+              boxShadow: '0 0 16px rgba(249,115,22,0.55)',
               animation: 'scan-qr 2s linear infinite'
             }} />
           </div>
@@ -335,7 +338,7 @@ const Row = ({ label, value }) => (
     <span style={{ fontSize: '12px', color: '#9CA3AF', fontWeight: 600, minWidth: '70px', paddingTop: '1px' }}>
       {label}
     </span>
-    <span style={{ fontSize: '14px', color: '#111827', fontWeight: 500, wordBreak: 'break-all' }}>
+    <span style={{ fontSize: '14px', color: '#FFFFFF', fontWeight: 500, wordBreak: 'break-all' }}>
       {value}
     </span>
   </div>

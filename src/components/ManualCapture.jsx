@@ -49,28 +49,28 @@ const ManualCapture = ({ changeView, setExtractedData }) => {
   const fieldStyle = (hasError) => ({
     width: '100%',
     height: '48px',
-    borderRadius: '12px',
-    border: `1.5px solid ${hasError ? '#EF4444' : '#D1D5DB'}`,
-    background: '#FFFFFF',
+    borderRadius: '16px',
+    border: `1.5px solid ${hasError ? '#DC2626' : 'rgba(255,255,255,0.08)'}`,
+    background: 'rgba(18,26,36,0.56)',
     padding: '0 14px',
     fontSize: '15px',
-    color: '#111827',
+    color: '#FFFFFF',
     outline: 'none',
-    transition: 'border-color 0.2s',
+    transition: 'border-color 180ms ease, box-shadow 180ms ease, background 180ms ease',
     fontFamily: 'Inter, system-ui, sans-serif'
   });
 
   const labelStyle = {
     display: 'block',
     fontSize: '13px',
-    fontWeight: 700,
-    color: '#4B5563',
+    fontWeight: 500,
+    color: '#B6C0CF',
     marginBottom: '6px'
   };
 
   const errorStyle = {
     fontSize: '12px',
-    color: '#EF4444',
+    color: '#DC2626',
     marginTop: '4px',
     fontWeight: 500
   };
@@ -82,22 +82,23 @@ const ManualCapture = ({ changeView, setExtractedData }) => {
         <div
           style={{
             width: 40, height: 40, borderRadius: '12px',
-            background: 'rgba(28,94,214,0.1)',
+            background: 'rgba(249,115,22,0.10)',
+            border: '1px solid rgba(249,115,22,0.12)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             flexShrink: 0
           }}
         >
-          <User size={20} color="var(--snap-blue-sec)" />
+          <User size={20} color="var(--accent-orange)" />
         </div>
         <div>
           <h2 style={{
             margin: 0, fontSize: '18px', fontWeight: 800,
-            color: 'var(--snap-blue-deep)',
-            fontFamily: 'Outfit, system-ui, sans-serif'
+            color: '#FFFFFF',
+            fontFamily: 'Inter, system-ui, sans-serif'
           }}>
             {isES ? 'Captura Manual' : 'Manual Capture'}
           </h2>
-          <p style={{ margin: 0, fontSize: '12px', color: '#9CA3AF' }}>
+          <p style={{ margin: 0, fontSize: '12px', color: '#B6C0CF' }}>
             {isES ? 'Ingresa los datos directamente' : 'Enter contact details directly'}
           </p>
         </div>
@@ -106,11 +107,12 @@ const ManualCapture = ({ changeView, setExtractedData }) => {
       {/* Form */}
       <div
         style={{
-          background: '#FFFFFF',
-          borderRadius: '20px',
-          padding: '20px',
-          boxShadow: '0 2px 12px rgba(0,0,0,0.05)',
-          border: '1px solid #F0F0F0'
+          background: 'rgba(42,54,71,0.78)',
+          borderRadius: '24px',
+          padding: '22px',
+          boxShadow: '0 18px 48px rgba(0,0,0,0.20)',
+          border: '1px solid rgba(255,255,255,0.06)',
+          backdropFilter: 'blur(18px)'
         }}
       >
         {/* Name */}

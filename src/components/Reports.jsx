@@ -287,8 +287,16 @@ const Reports = () => {
 
       <div className="flex flex-col gap-4">
         {filteredLeads.length === 0 ? (
-          <div className="text-center text-muted p-8 glass-panel border-dashed border-gray-300">
-            <p>{t('no_contacts')}</p>
+          <div className="empty-state text-center text-muted p-8 glass-panel border-dashed border-gray-300">
+            <div className="empty-state-icon">
+              <Search size={20} />
+            </div>
+            <h3>{t('no_contacts')}</h3>
+            <p>
+              {isES
+                ? 'Los leads capturados aparecerán aquí con búsqueda, exportación e informe IA.'
+                : 'Captured leads will appear here with search, export and AI reporting.'}
+            </p>
           </div>
         ) : (
           filteredLeads.map((lead) => (
@@ -389,7 +397,7 @@ const Reports = () => {
           >
             <div
               className="flex justify-between items-center mb-4 pb-4 border-b border-gray-200"
-              style={{ borderBottom: '1px solid #E5E7EB', paddingBottom: '1rem', marginBottom: '1rem' }}
+              style={{ borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: '1rem', marginBottom: '1rem' }}
             >
               <div>
                 <h2
@@ -421,7 +429,7 @@ const Reports = () => {
             >
               {isGenerating ? (
                 <div
-                  className="flex flex-col items-center justify-center h-full text-center gap-4 text-muted"
+                  className="ai-processing flex flex-col items-center justify-center h-full text-center gap-4 text-muted"
                   style={{
                     display: 'flex',
                     flexDirection: 'column',
@@ -431,22 +439,19 @@ const Reports = () => {
                     color: 'var(--text-muted)'
                   }}
                 >
-                  <div
-                    className="w-12 h-12 rounded-full border-4 border-gray-200 border-t-[var(--snap-blue-sec)] animate-spin"
-                    style={{
-                      width: '48px',
-                      height: '48px',
-                      borderRadius: '50%',
-                      border: '4px solid #E5E7EB',
-                      borderTopColor: 'var(--snap-blue-sec)',
-                      animation: 'spin 1s linear infinite'
-                    }}
-                  ></div>
+                  <div className="ai-orb">
+                    <Sparkles size={28} />
+                  </div>
                   <p className="font-medium text-gray-500">{t('analyzing_data')}</p>
                   {!hasActiveEvent && <p className="text-xs text-gray-400">{copy.noEventContext}</p>}
+                  <div className="skeleton-stack">
+                    <div className="skeleton-line"></div>
+                    <div className="skeleton-line medium"></div>
+                    <div className="skeleton-line short"></div>
+                  </div>
                 </div>
               ) : reportError ? (
-                <div className="text-red-600 p-4 bg-red-50 rounded-lg border border-red-200 text-center font-medium">
+                <div className="premium-error text-red-600 p-4 bg-red-50 rounded-lg border border-red-200 text-center font-medium">
                   {reportError}
                 </div>
               ) : (

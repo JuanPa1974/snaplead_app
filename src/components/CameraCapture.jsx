@@ -1,39 +1,45 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useCallback } from 'react';
 import { Camera, X } from 'lucide-react';
-import { useLanguage } from '../context/LanguageContext';
+import { useLanguage } from '../context/useLanguage';
 
 const CameraCapture = ({ changeView, setCapturedImage }) => {
   const { t } = useLanguage();
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
-  const [stream, setStream] = useState(null);
+  const streamRef = useRef(null);
   const [error, setError] = useState(false);
 
-  useEffect(() => {
-    startCamera();
-    return () => stopCamera();
+  const stopCamera = useCallback(() => {
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach((track) => track.stop());
+      streamRef.current = null;
+    }
   }, []);
 
-  const startCamera = async () => {
-    try {
-      const mediaStream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: 'environment' }
-      });
-      setStream(mediaStream);
+  useEffect(() => {
+    let isMounted = true;
+
+    navigator.mediaDevices.getUserMedia({
+      video: { facingMode: 'environment' }
+    }).then((mediaStream) => {
+      if (!isMounted) {
+        mediaStream.getTracks().forEach((track) => track.stop());
+        return;
+      }
+      streamRef.current = mediaStream;
       if (videoRef.current) {
         videoRef.current.srcObject = mediaStream;
       }
-    } catch (err) {
+    }).catch((err) => {
       console.error('Error accessing camera', err);
-      setError(true);
-    }
-  };
+      if (isMounted) setError(true);
+    });
 
-  const stopCamera = () => {
-    if (stream) {
-      stream.getTracks().forEach((track) => track.stop());
-    }
-  };
+    return () => {
+      isMounted = false;
+      stopCamera();
+    };
+  }, [stopCamera]);
 
   const captureImage = () => {
     if (videoRef.current && canvasRef.current) {

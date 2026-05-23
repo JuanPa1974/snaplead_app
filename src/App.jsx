@@ -21,11 +21,6 @@ const AndaraLabSeal = () => (
   </svg>
 );
 
-// Capture-mode views
-const CAPTURE_VIEWS = ['manual', 'camera', 'qr'];
-// Main views shown in bottom nav
-const MAIN_VIEWS = ['dashboard', 'reports'];
-
 function AppContent() {
   const [currentView, setCurrentView]     = useState('dashboard');
   const [showSettings, setShowSettings]   = useState(false);
@@ -45,9 +40,6 @@ function AppContent() {
       if (oldData) localStorage.removeItem(oldKey);
     });
   }, []);
-
-  const isCaptureView = CAPTURE_VIEWS.includes(currentView) ||
-    ['extraction', 'classification'].includes(currentView);
 
   // ── NAV LABELS (bilingual quick access) ─────────────────────────────
   const label = {

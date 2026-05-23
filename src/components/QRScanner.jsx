@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 import jsQR from 'jsqr';
 import { QrCode, CheckCircle2, XCircle, ChevronRight } from 'lucide-react';
-import { useLanguage } from '../context/LanguageContext';
+import { useLanguage } from '../context/useLanguage';
 
 // Parse vCard string into contact fields
 const parseVCard = (text) => {
@@ -40,6 +40,7 @@ const QRScanner = ({ changeView, setExtractedData }) => {
   const canvasRef   = useRef(null);
   const streamRef   = useRef(null);
   const rafRef      = useRef(null);
+  const tickRef     = useRef(null);
 
   const [status, setStatus]       = useState('scanning'); // scanning | found | error
   const [qrResult, setQrResult]   = useState(null);
@@ -60,7 +61,7 @@ const QRScanner = ({ changeView, setExtractedData }) => {
     const video  = videoRef.current;
     const canvas = canvasRef.current;
     if (!video || !canvas || video.readyState !== video.HAVE_ENOUGH_DATA) {
-      rafRef.current = requestAnimationFrame(tick);
+      rafRef.current = requestAnimationFrame(tickRef.current);
       return;
     }
     canvas.width  = video.videoWidth;
@@ -82,9 +83,13 @@ const QRScanner = ({ changeView, setExtractedData }) => {
       setParsedData(parsed);
       setStatus('found');
     } else {
-      rafRef.current = requestAnimationFrame(tick);
+      rafRef.current = requestAnimationFrame(tickRef.current);
     }
   }, [stopCamera]);
+
+  useEffect(() => {
+    tickRef.current = tick;
+  }, [tick]);
 
   // Start camera
   useEffect(() => {

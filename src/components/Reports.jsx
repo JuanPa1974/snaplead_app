@@ -11,7 +11,7 @@ import {
   Copy,
   Check
 } from 'lucide-react';
-import { useLanguage } from '../context/LanguageContext';
+import { useLanguage } from '../context/useLanguage';
 
 const Reports = () => {
   const { t, language } = useLanguage();

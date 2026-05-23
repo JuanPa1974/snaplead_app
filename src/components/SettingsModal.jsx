@@ -1,34 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { X, Save, Key, Globe, CheckCircle2, Edit2 } from 'lucide-react';
-import { useLanguage } from '../context/LanguageContext';
+import { useLanguage } from '../context/useLanguage';
+
+const HAS_ENV_KEY = Boolean(
+  import.meta.env.VITE_GEMINI_API_KEY &&
+  import.meta.env.VITE_GEMINI_API_KEY !== 'REEMPLAZA_CON_TU_API_KEY'
+);
 
 const SettingsModal = ({ onClose }) => {
   const { t, language, changeLanguage } = useLanguage();
   const isES = language === 'es';
-  const [apiKey, setApiKey]   = useState('');
-  const [hasKey, setHasKey]   = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
-
-  // True when the API key is configured at build-time by admin (not via UI)
-  const hasEnvKey = Boolean(
-    import.meta.env.VITE_GEMINI_API_KEY &&
-    import.meta.env.VITE_GEMINI_API_KEY !== 'REEMPLAZA_CON_TU_API_KEY'
-  );
-
-  useEffect(() => {
-    if (hasEnvKey) {
-      // Key is set by admin via .env — don't show editable field
-      setHasKey(true);
-      return;
-    }
-    const savedKey = localStorage.getItem('geminiApiKey');
-    if (savedKey) {
-      setApiKey(savedKey);
-      setHasKey(true);
-    } else {
-      setIsEditing(true);
-    }
-  }, []);
+  const [apiKey, setApiKey] = useState(() => (
+    HAS_ENV_KEY ? '' : localStorage.getItem('geminiApiKey') || ''
+  ));
+  const [hasKey, setHasKey] = useState(() => (
+    HAS_ENV_KEY || Boolean(localStorage.getItem('geminiApiKey'))
+  ));
+  const [isEditing, setIsEditing] = useState(() => (
+    !HAS_ENV_KEY && !localStorage.getItem('geminiApiKey')
+  ));
 
   const handleSave = () => {
     localStorage.setItem('geminiApiKey', apiKey.trim());
@@ -87,7 +77,7 @@ const SettingsModal = ({ onClose }) => {
 
         {/* API Key section */}
         <div className="form-group mt-6 p-5 rounded-xl border border-gray-200 bg-gray-50 shadow-inner block">
-          {hasEnvKey ? (
+          {HAS_ENV_KEY ? (
             /* Key configured by admin via .env — show status only, no editing */
             <div className="flex flex-col items-center gap-3">
               <div className="flex items-center gap-2">

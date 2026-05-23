@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { BrainCircuit, CheckCircle2, ChevronRight, AlertTriangle } from 'lucide-react';
-import { useLanguage } from '../context/LanguageContext';
+import { useLanguage } from '../context/useLanguage';
 
 const DataExtraction = ({ image, changeView, setExtractedData }) => {
   const { t } = useLanguage();
@@ -10,11 +10,7 @@ const DataExtraction = ({ image, changeView, setExtractedData }) => {
     name: '', company: '', role: '', email: '', phone: '', country: ''
   });
 
-  useEffect(() => {
-    extractData();
-  }, []);
-
-  const extractData = async () => {
+  const extractData = useCallback(async () => {
     if (!image) {
       setIsExtracting(false);
       return;
@@ -83,7 +79,11 @@ const DataExtraction = ({ image, changeView, setExtractedData }) => {
     } finally {
       setIsExtracting(false);
     }
-  };
+  }, [image, t]);
+
+  useEffect(() => {
+    extractData();
+  }, [extractData]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

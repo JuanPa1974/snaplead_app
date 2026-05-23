@@ -1,5 +1,62 @@
-import React, { useEffect, useState } from 'react';
-import { useLanguage } from '../context/LanguageContext';
+import React, { useState } from 'react';
+import { useLanguage } from '../context/useLanguage';
+
+const getStoredEvent = () => {
+  const savedEvent = JSON.parse(localStorage.getItem('snapleadEvent') || '{}');
+  return {
+    eventName: savedEvent.eventName || '',
+    eventYear: savedEvent.eventYear || '',
+    startDate: savedEvent.startDate || '',
+    endDate: savedEvent.endDate || ''
+  };
+};
+
+const isEventComplete = (eventData) => Boolean(
+  eventData.eventName &&
+  eventData.eventYear &&
+  eventData.startDate &&
+  eventData.endDate
+);
+
+const getDailyStats = () => {
+  const leads = JSON.parse(localStorage.getItem('snapleadLeads') || '[]');
+  const today = new Date().toLocaleDateString();
+
+  const todaysLeads = leads.filter((l) => {
+    if (!l || !l.timestamp) return false;
+    const d = new Date(l.timestamp);
+    if (isNaN(d.getTime())) return false;
+    return d.toLocaleDateString() === today;
+  });
+
+  const countryMap = {};
+  const typeMap = {};
+
+  todaysLeads.forEach((l) => {
+    const c = l.country ? l.country.trim().toUpperCase() : 'UNKNOWN';
+    countryMap[c] = (countryMap[c] || 0) + 1;
+
+    const tVal = l.contact_type || 'unknown';
+    typeMap[tVal] = (typeMap[tVal] || 0) + 1;
+  });
+
+  const byCountryList = Object.entries(countryMap || {}).map(([name, count]) => ({
+    name,
+    count
+  }));
+
+  const byTypeList = Object.entries(typeMap || {}).map(([name, count]) => ({
+    name,
+    count
+  }));
+
+  return {
+    total: todaysLeads.length || 0,
+    highOpp: todaysLeads.filter((l) => l.opportunity_level === 'high').length || 0,
+    byCountry: Array.isArray(byCountryList) ? byCountryList : [],
+    byType: Array.isArray(byTypeList) ? byTypeList : []
+  };
+};
 
 const Dashboard = () => {
   const { t, language } = useLanguage();
@@ -29,82 +86,10 @@ const Dashboard = () => {
     noEventConfigured: isES ? 'Configura el evento para comenzar' : 'Set up the event to begin'
   };
 
-  const [stats, setStats] = useState({
-    total: 0,
-    highOpp: 0,
-    byCountry: [],
-    byType: []
-  });
-
-  const [eventData, setEventData] = useState({
-    eventName: '',
-    eventYear: '',
-    startDate: '',
-    endDate: ''
-  });
-
-  const [eventConfigured, setEventConfigured] = useState(false);
-  const [editingEvent, setEditingEvent] = useState(true);
-
-  useEffect(() => {
-    const savedEvent = JSON.parse(localStorage.getItem('snapleadEvent') || '{}');
-
-    const normalizedEvent = {
-      eventName: savedEvent.eventName || '',
-      eventYear: savedEvent.eventYear || '',
-      startDate: savedEvent.startDate || '',
-      endDate: savedEvent.endDate || ''
-    };
-
-    setEventData(normalizedEvent);
-
-    const hasEvent =
-      normalizedEvent.eventName &&
-      normalizedEvent.eventYear &&
-      normalizedEvent.startDate &&
-      normalizedEvent.endDate;
-
-    setEventConfigured(Boolean(hasEvent));
-    setEditingEvent(!hasEvent);
-
-    const leads = JSON.parse(localStorage.getItem('snapleadLeads') || '[]');
-    const today = new Date().toLocaleDateString();
-
-    const todaysLeads = leads.filter((l) => {
-      if (!l || !l.timestamp) return false;
-      const d = new Date(l.timestamp);
-      if (isNaN(d.getTime())) return false;
-      return d.toLocaleDateString() === today;
-    });
-
-    const countryMap = {};
-    const typeMap = {};
-
-    todaysLeads.forEach((l) => {
-      const c = l.country ? l.country.trim().toUpperCase() : 'UNKNOWN';
-      countryMap[c] = (countryMap[c] || 0) + 1;
-
-      const tVal = l.contact_type || 'unknown';
-      typeMap[tVal] = (typeMap[tVal] || 0) + 1;
-    });
-
-    const byCountryList = Object.entries(countryMap || {}).map(([name, count]) => ({
-      name,
-      count
-    }));
-
-    const byTypeList = Object.entries(typeMap || {}).map(([name, count]) => ({
-      name,
-      count
-    }));
-
-    setStats({
-      total: todaysLeads.length || 0,
-      highOpp: todaysLeads.filter((l) => l.opportunity_level === 'high').length || 0,
-      byCountry: Array.isArray(byCountryList) ? byCountryList : [],
-      byType: Array.isArray(byTypeList) ? byTypeList : []
-    });
-  }, []);
+  const [stats] = useState(getDailyStats);
+  const [eventData, setEventData] = useState(getStoredEvent);
+  const [eventConfigured, setEventConfigured] = useState(() => isEventComplete(getStoredEvent()));
+  const [editingEvent, setEditingEvent] = useState(() => !isEventComplete(getStoredEvent()));
 
   const handleEventChange = (e) => {
     const { name, value } = e.target;

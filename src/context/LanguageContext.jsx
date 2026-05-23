@@ -1,20 +1,18 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { translations } from '../i18n';
+import { LanguageContext } from './language-context-core';
 
-const LanguageContext = createContext();
+const getInitialLanguage = () => {
+  const savedLang = localStorage.getItem('snapleadLanguage');
+  if (savedLang && (savedLang === 'es' || savedLang === 'en')) {
+    return savedLang;
+  }
+  localStorage.setItem('snapleadLanguage', 'es');
+  return 'es';
+};
 
 export const LanguageProvider = ({ children }) => {
-  const [language, setLanguage] = useState('es');
-
-  useEffect(() => {
-    const savedLang = localStorage.getItem('snapleadLanguage');
-    if (savedLang && (savedLang === 'es' || savedLang === 'en')) {
-      setLanguage(savedLang);
-    } else {
-      setLanguage('es');
-      localStorage.setItem('snapleadLanguage', 'es');
-    }
-  }, []);
+  const [language, setLanguage] = useState(getInitialLanguage);
 
   const changeLanguage = (lang) => {
     setLanguage(lang);
@@ -31,5 +29,3 @@ export const LanguageProvider = ({ children }) => {
     </LanguageContext.Provider>
   );
 };
-
-export const useLanguage = () => useContext(LanguageContext);

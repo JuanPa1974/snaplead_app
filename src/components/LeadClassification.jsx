@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Save } from 'lucide-react';
-import { useLanguage } from '../context/LanguageContext';
+import { useLanguage } from '../context/useLanguage';
 
 const LeadClassification = ({ data, changeView }) => {
   const { t } = useLanguage();

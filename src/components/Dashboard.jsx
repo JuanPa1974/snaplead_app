@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { CalendarRange, Database, Globe2, ShieldCheck, UsersRound } from 'lucide-react';
 import { useLanguage } from '../context/useLanguage';
 
 const getStoredEvent = () => {
@@ -83,7 +84,9 @@ const Dashboard = () => {
     from: isES ? 'del' : 'from',
     to: isES ? 'al' : 'to',
     dashboardSubtitle: isES ? 'Actividad de leads de hoy' : 'Today’s lead activity',
-    noEventConfigured: isES ? 'Configura el evento para comenzar' : 'Set up the event to begin'
+    noEventConfigured: isES ? 'Configura el evento para comenzar' : 'Set up the event to begin',
+    noCountries: isES ? 'Los países aparecerán al guardar leads.' : 'Countries will appear after saving leads.',
+    noTypes: isES ? 'Los tipos aparecerán tras clasificar leads.' : 'Types will appear after classifying leads.'
   };
 
   const [stats] = useState(getDailyStats);
@@ -189,40 +192,42 @@ const Dashboard = () => {
   };
 
   const panelStyle = {
-    background: '#FFFFFF',
-    border: '1px solid #E5E7EB',
-    borderRadius: '18px',
-    padding: '20px',
+    background: 'rgba(42,54,71,0.78)',
+    border: '1px solid rgba(255,255,255,0.06)',
+    borderRadius: '24px',
+    padding: '22px',
     marginBottom: '16px',
-    boxShadow: '0 2px 10px rgba(0,0,0,0.04)'
+    boxShadow: '0 18px 48px rgba(0,0,0,0.20)',
+    backdropFilter: 'blur(18px)'
   };
 
   const inputStyle = {
     width: '100%',
     height: '48px',
-    borderRadius: '12px',
-    border: '1px solid #D1D5DB',
-    background: '#FFFFFF',
+    borderRadius: '16px',
+    border: '1px solid rgba(255,255,255,0.08)',
+    background: 'rgba(18,26,36,0.56)',
     padding: '0 14px',
     fontSize: '15px',
-    color: '#111827',
-    outline: 'none'
+    color: '#FFFFFF',
+    outline: 'none',
+    fontFamily: 'Inter, system-ui, sans-serif'
   };
 
   const labelStyle = {
     display: 'block',
     fontSize: '14px',
-    fontWeight: 700,
-    color: '#4B5563',
+    fontWeight: 500,
+    color: '#B6C0CF',
     marginBottom: '8px'
   };
 
   const secondaryButtonStyle = {
     height: '42px',
-    border: '1px solid #E5E7EB',
-    borderRadius: '12px',
-    background: '#FFFFFF',
-    color: '#1A1A1A',
+    border: '1px solid rgba(255,255,255,0.08)',
+    borderRadius: '14px',
+    background: 'rgba(36,48,65,0.72)',
+    color: '#B6C0CF',
     fontSize: '14px',
     fontWeight: 700,
     cursor: 'pointer',
@@ -230,13 +235,16 @@ const Dashboard = () => {
   };
 
   return (
-    <div style={{ background: '#FFFFFF', minHeight: '100%', padding: '0' }}>
+    <div style={{ minHeight: '100%', padding: '0' }}>
       {!eventConfigured || editingEvent ? (
         <div style={panelStyle}>
-          <h2 style={{ color: '#0B3A82', margin: 0, fontSize: '24px', fontWeight: 800 }}>
+          <div className="empty-state-icon mb-4">
+            <CalendarRange size={20} />
+          </div>
+          <h2 style={{ color: '#FFFFFF', margin: 0, fontSize: '24px', fontWeight: 800 }}>
             {copy.eventSetupTitle}
           </h2>
-          <p style={{ color: '#555', marginTop: '6px', marginBottom: '18px' }}>
+          <p style={{ color: '#B6C0CF', marginTop: '6px', marginBottom: '18px' }}>
             {copy.eventSetupDesc}
           </p>
 
@@ -293,13 +301,13 @@ const Dashboard = () => {
                 flex: 1,
                 height: '50px',
                 border: 'none',
-                borderRadius: '14px',
-                background: '#1C5ED6',
+                borderRadius: '16px',
+                background: 'linear-gradient(135deg, #F97316, #D97706)',
                 color: '#FFFFFF',
                 fontSize: '15px',
                 fontWeight: 800,
                 cursor: 'pointer',
-                boxShadow: '0 4px 12px rgba(28, 94, 214, 0.25)'
+                boxShadow: '0 14px 34px rgba(249, 115, 22, 0.22)'
               }}
             >
               {copy.saveEvent}
@@ -311,10 +319,10 @@ const Dashboard = () => {
                 style={{
                   flex: 1,
                   height: '50px',
-                  border: '1px solid #E5E7EB',
-                  borderRadius: '14px',
-                  background: '#FFFFFF',
-                  color: '#1A1A1A',
+                  border: '1px solid rgba(255,255,255,0.08)',
+                  borderRadius: '16px',
+                  background: 'rgba(36,48,65,0.72)',
+                  color: '#B6C0CF',
                   fontSize: '15px',
                   fontWeight: 700,
                   cursor: 'pointer'
@@ -339,7 +347,7 @@ const Dashboard = () => {
           <div style={{ minWidth: 0 }}>
             <div
               style={{
-                color: '#0B3A82',
+                color: '#FFFFFF',
                 fontSize: '15px',
                 fontWeight: 800,
                 marginBottom: '4px'
@@ -349,7 +357,7 @@ const Dashboard = () => {
             </div>
             <div
               style={{
-                color: '#6B7280',
+                color: '#B6C0CF',
                 fontSize: '13px',
                 lineHeight: 1.4
               }}
@@ -377,21 +385,30 @@ const Dashboard = () => {
       )}
 
       <div style={panelStyle}>
-        <h2 style={{ color: '#0B3A82', margin: 0, fontSize: '28px', fontWeight: 700 }}>
-          {t('daily_summary')}
-        </h2>
-        <p style={{ color: '#555', marginTop: '6px', marginBottom: '18px' }}>
-          {copy.dashboardSubtitle}
-        </p>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
+          <div className="empty-state-icon compact">
+            <UsersRound size={18} />
+          </div>
+          <div>
+            <h2 style={{ color: '#FFFFFF', margin: 0, fontSize: '28px', fontWeight: 700 }}>
+              {t('daily_summary')}
+            </h2>
+            <p style={{ color: '#B6C0CF', marginTop: '4px', marginBottom: 0 }}>
+              {copy.dashboardSubtitle}
+            </p>
+          </div>
+        </div>
 
         <div style={{ display: 'flex', gap: '12px' }}>
           <div
             style={{
               flex: 1,
-              background: '#0B3A82',
+              background: 'linear-gradient(135deg, #243041, #1E2F4D)',
               color: '#FFFFFF',
-              borderRadius: '16px',
-              padding: '18px'
+              border: '1px solid rgba(255,255,255,0.06)',
+              borderRadius: '20px',
+              padding: '18px',
+              boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.04)'
             }}
           >
             <div style={{ fontSize: '13px', opacity: 0.9, marginBottom: '8px' }}>
@@ -403,10 +420,11 @@ const Dashboard = () => {
           <div
             style={{
               flex: 1,
-              background: '#1C5ED6',
+              background: 'linear-gradient(135deg, #F97316, #D97706)',
               color: '#FFFFFF',
-              borderRadius: '16px',
-              padding: '18px'
+              borderRadius: '20px',
+              padding: '18px',
+              boxShadow: '0 14px 34px rgba(249,115,22,0.20)'
             }}
           >
             <div style={{ fontSize: '13px', opacity: 0.9, marginBottom: '8px' }}>
@@ -418,7 +436,7 @@ const Dashboard = () => {
       </div>
 
       <div style={panelStyle}>
-        <h3 style={{ color: '#0B3A82', marginTop: 0, marginBottom: '14px' }}>
+        <h3 style={{ color: '#FFFFFF', marginTop: 0, marginBottom: '14px' }}>
           {t('by_country')}
         </h3>
 
@@ -430,20 +448,26 @@ const Dashboard = () => {
                 display: 'flex',
                 justifyContent: 'space-between',
                 padding: '10px 0',
-                borderBottom: i !== stats.byCountry.length - 1 ? '1px solid #EEE' : 'none'
+                borderBottom: i !== stats.byCountry.length - 1 ? '1px solid rgba(255,255,255,0.06)' : 'none'
               }}
             >
-              <span style={{ color: '#1A1A1A', fontWeight: 600 }}>{c.name}</span>
-              <span style={{ color: '#555' }}>{c.count}</span>
+              <span style={{ color: '#FFFFFF', fontWeight: 600 }}>{c.name}</span>
+              <span style={{ color: '#B6C0CF' }}>{c.count}</span>
             </div>
           ))
         ) : (
-          <div style={{ color: '#777' }}>{t('no_data')}</div>
+          <div className="mini-empty-state">
+            <Globe2 size={18} />
+            <div>
+              <strong>{t('no_data')}</strong>
+              <span>{copy.noCountries}</span>
+            </div>
+          </div>
         )}
       </div>
 
       <div style={panelStyle}>
-        <h3 style={{ color: '#0B3A82', marginTop: 0, marginBottom: '14px' }}>
+        <h3 style={{ color: '#FFFFFF', marginTop: 0, marginBottom: '14px' }}>
           {t('by_type')}
         </h3>
 
@@ -455,15 +479,21 @@ const Dashboard = () => {
                 display: 'flex',
                 justifyContent: 'space-between',
                 padding: '10px 0',
-                borderBottom: i !== stats.byType.length - 1 ? '1px solid #EEE' : 'none'
+                borderBottom: i !== stats.byType.length - 1 ? '1px solid rgba(255,255,255,0.06)' : 'none'
               }}
             >
-              <span style={{ color: '#1A1A1A', fontWeight: 600 }}>{item.name}</span>
-              <span style={{ color: '#555' }}>{item.count}</span>
+              <span style={{ color: '#FFFFFF', fontWeight: 600 }}>{item.name}</span>
+              <span style={{ color: '#B6C0CF' }}>{item.count}</span>
             </div>
           ))
         ) : (
-          <div style={{ color: '#777' }}>{t('no_data')}</div>
+          <div className="mini-empty-state">
+            <Database size={18} />
+            <div>
+              <strong>{t('no_data')}</strong>
+              <span>{copy.noTypes}</span>
+            </div>
+          </div>
         )}
       </div>
 
@@ -471,14 +501,15 @@ const Dashboard = () => {
       <div
         style={{
           ...panelStyle,
-          border: '1px solid #E0E7FF',
-          background: 'rgba(238,242,255,0.6)'
+          border: '1px solid rgba(249,115,22,0.12)',
+          background: 'rgba(36,48,65,0.74)'
         }}
       >
-        <h3 style={{ color: '#0B3A82', marginTop: 0, marginBottom: '6px', fontSize: '15px' }}>
-          {isES ? '🔒 Copia de seguridad' : '🔒 Data Backup'}
+        <h3 style={{ color: '#FFFFFF', marginTop: 0, marginBottom: '6px', fontSize: '15px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <ShieldCheck size={16} color="var(--accent-orange)" />
+          {isES ? 'Copia de seguridad' : 'Data Backup'}
         </h3>
-        <p style={{ color: '#6B7280', fontSize: '13px', marginBottom: '14px' }}>
+        <p style={{ color: '#B6C0CF', fontSize: '13px', marginBottom: '14px' }}>
           {isES
             ? 'Exporta tus leads a un archivo JSON para protegerlos. Importa para restaurar.'
             : 'Export your leads to a JSON file as backup. Import to restore.'}
@@ -490,13 +521,13 @@ const Dashboard = () => {
               flex: 1,
               height: '44px',
               border: 'none',
-              borderRadius: '12px',
-              background: '#1C5ED6',
+              borderRadius: '14px',
+              background: 'linear-gradient(135deg, #F97316, #D97706)',
               color: '#FFFFFF',
               fontSize: '14px',
               fontWeight: 700,
               cursor: 'pointer',
-              boxShadow: '0 3px 10px rgba(28,94,214,0.22)'
+              boxShadow: '0 12px 30px rgba(249,115,22,0.20)'
             }}
           >
             ⬇ {isES ? 'Exportar' : 'Export'}
@@ -505,10 +536,10 @@ const Dashboard = () => {
             style={{
               flex: 1,
               height: '44px',
-              border: '1px solid #D1D5DB',
-              borderRadius: '12px',
-              background: '#FFFFFF',
-              color: '#374151',
+              border: '1px solid rgba(255,255,255,0.08)',
+              borderRadius: '14px',
+              background: 'rgba(18,26,36,0.48)',
+              color: '#B6C0CF',
               fontSize: '14px',
               fontWeight: 700,
               cursor: 'pointer',

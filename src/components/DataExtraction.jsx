@@ -52,18 +52,20 @@ const DataExtraction = ({ image, changeView, setExtractedData }) => {
 
   if (isExtracting) {
     return (
-      <div className="glass-panel text-center flex flex-col items-center justify-center py-12 h-full min-h-[400px]">
-        <div className="relative mb-8">
-          <div className="absolute inset-0 rounded-full animate-ping" style={{ backgroundColor: 'var(--primary-glow)' }}></div>
-          <div className="relative bg-[#F3F4F6] p-6 rounded-full border border-[var(--snap-blue-sec)]">
-            <BrainCircuit size={48} className="text-[var(--snap-blue-sec)]" style={{ animation: 'pulse-glow 2s infinite' }} />
-          </div>
+      <div className="glass-panel ai-processing text-center flex flex-col items-center justify-center py-12 h-full min-h-[400px]">
+        <div className="ai-orb mb-6">
+          <BrainCircuit size={34} />
         </div>
         <h2 className="mb-2 text-xl text-[var(--snap-blue-deep)] font-semibold">{t('processing')}</h2>
         <p className="text-muted">{t('processing_desc')}</p>
+        <div className="skeleton-stack">
+          <div className="skeleton-line"></div>
+          <div className="skeleton-line medium"></div>
+          <div className="skeleton-line short"></div>
+        </div>
         
         {image && (
-          <div className="mt-8 relative w-48 h-28 rounded-md overflow-hidden border border-gray-200 shadow-sm">
+          <div className="ai-preview-card mt-8 relative w-48 h-28 rounded-md overflow-hidden border border-gray-200 shadow-sm">
              <img src={image} alt="Card Preview" className="w-full h-full object-cover opacity-80" />
              <div className="absolute top-0 left-0 w-full h-[2px] bg-[var(--snap-blue-sec)] shadow-[0_0_10px_var(--snap-blue-sec)]" 
                   style={{ animation: 'scan-card 2s linear infinite' }}></div>
@@ -85,7 +87,7 @@ const DataExtraction = ({ image, changeView, setExtractedData }) => {
       </div>
       
       {errorObj && (
-        <div className="bg-red-50 text-red-700 border border-red-200 p-3 rounded-lg mb-4 text-sm font-medium">
+        <div className="premium-error bg-red-50 text-red-700 border border-red-200 p-3 rounded-lg mb-4 text-sm font-medium">
           {errorObj}
         </div>
       )}

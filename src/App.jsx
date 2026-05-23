@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { BarChart3, Camera, Home, PenLine, QrCode, Settings } from 'lucide-react';
 import { LanguageProvider } from './context/LanguageContext';
 import Dashboard from './components/Dashboard';
 import CameraCapture from './components/CameraCapture';
@@ -8,18 +9,7 @@ import SettingsModal from './components/SettingsModal';
 import Reports from './components/Reports';
 import DataExtraction from './components/DataExtraction';
 import LeadClassification from './components/LeadClassification';
-
-// AndaraLab seal inline SVG
-const AndaraLabSeal = () => (
-  <svg width="110" height="22" viewBox="0 0 220 44" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ display: 'block' }}>
-    <rect width="220" height="44" rx="22" fill="#0B1F45" stroke="#1C5ED6" strokeWidth="1.5"/>
-    <g transform="translate(10,10)">
-      <polygon points="12,2 14.5,9 22,9 16,13.5 18.5,21 12,16.5 5.5,21 8,13.5 2,9 9.5,9" fill="#1C5ED6" opacity="0.9"/>
-    </g>
-    <text x="36" y="16" fontFamily="Inter,system-ui,sans-serif" fontSize="9" fill="#6B9FE4" letterSpacing="1.5" fontWeight="500">POWERED BY</text>
-    <text x="36" y="30" fontFamily="Outfit,system-ui,sans-serif" fontSize="13" fill="#FFFFFF" letterSpacing="0.5" fontWeight="700">AndaraLab</text>
-  </svg>
-);
+import andaraPoweredBy from './assets/brand/andaralab-poweredby-horizontal.png';
 
 function AppContent() {
   const [currentView, setCurrentView]     = useState('dashboard');
@@ -55,6 +45,8 @@ function AppContent() {
   };
 
   // Shared nav button style factory
+  const navTransition = 'transform 180ms ease, background 180ms ease, border-color 180ms ease, box-shadow 180ms ease, color 180ms ease, opacity 180ms ease';
+
   const navBtn = (view, variant = 'default') => {
     const isActive = currentView === view ||
       (view === 'camera' && ['camera','extraction'].includes(currentView)) ||
@@ -64,101 +56,112 @@ function AppContent() {
     if (variant === 'capture-main') {
       // The primary CTA (Cámara)
       return {
-        flex: 1, padding: '10px 6px',
-        borderRadius: '14px',
-        border: '1px solid rgba(255,255,255,0.25)',
+        flex: 1, padding: '11px 8px',
+        borderRadius: '18px',
+        border: '1px solid rgba(249,115,22,0.28)',
         background: isActive
-          ? 'rgba(11,58,130,0.92)'
-          : 'rgba(28,94,214,0.88)',
-        backdropFilter: 'blur(12px)',
-        WebkitBackdropFilter: 'blur(12px)',
+          ? 'linear-gradient(135deg, #F97316, #D97706)'
+          : 'rgba(249,115,22,0.82)',
+        backdropFilter: 'blur(18px)',
+        WebkitBackdropFilter: 'blur(18px)',
         color: '#FFFFFF',
         fontWeight: 800, fontSize: '12px',
-        letterSpacing: '0.06em', textTransform: 'uppercase',
-        boxShadow: '0 4px 16px rgba(28,94,214,0.32), inset 0 1px 0 rgba(255,255,255,0.15)',
-        cursor: 'pointer', transition: 'all 0.2s'
+        letterSpacing: '0.04em', textTransform: 'uppercase',
+        boxShadow: '0 10px 32px rgba(249,115,22,0.18), inset 0 1px 0 rgba(255,255,255,0.16)',
+        cursor: 'pointer', transition: navTransition, touchAction: 'manipulation'
       };
     }
 
     if (variant === 'capture-side') {
       return {
-        flex: 1, padding: '10px 6px',
-        borderRadius: '14px',
-        border: `1px solid ${isActive ? 'rgba(28,94,214,0.30)' : '#E5E7EB'}`,
+        flex: 1, padding: '11px 8px',
+        borderRadius: '18px',
+        border: `1px solid ${isActive ? 'rgba(249,115,22,0.22)' : 'rgba(255,255,255,0.07)'}`,
         background: isActive
-          ? 'rgba(28,94,214,0.09)'
-          : 'rgba(255,255,255,0.65)',
-        backdropFilter: 'blur(8px)',
-        WebkitBackdropFilter: 'blur(8px)',
-        color: isActive ? '#0B3A82' : '#6B7280',
+          ? 'rgba(249,115,22,0.10)'
+          : 'rgba(42,54,71,0.58)',
+        backdropFilter: 'blur(18px)',
+        WebkitBackdropFilter: 'blur(18px)',
+        color: isActive ? '#FFFFFF' : '#B6C0CF',
         fontWeight: 700, fontSize: '12px',
-        letterSpacing: '0.05em', textTransform: 'uppercase',
-        cursor: 'pointer', transition: 'all 0.2s'
+        letterSpacing: '0.04em', textTransform: 'uppercase',
+        cursor: 'pointer', transition: navTransition, touchAction: 'manipulation'
       };
     }
 
     // Bottom nav (default)
     return {
-      flex: 1, padding: '10px 6px',
-      borderRadius: '14px',
-      border: `1px solid ${isActive ? 'rgba(28,94,214,0.25)' : '#E5E7EB'}`,
+      flex: 1, padding: '11px 8px',
+      borderRadius: '18px',
+      border: `1px solid ${isActive ? 'rgba(249,115,22,0.20)' : 'rgba(255,255,255,0.06)'}`,
       background: isActive
-        ? 'rgba(28,94,214,0.08)'
-        : 'rgba(255,255,255,0.55)',
-      color: isActive ? '#0B3A82' : '#6B7280',
+        ? 'rgba(249,115,22,0.09)'
+        : 'rgba(36,48,65,0.52)',
+      color: isActive ? '#FFFFFF' : '#B6C0CF',
       fontWeight: 700, fontSize: '12px',
-      letterSpacing: '0.05em', textTransform: 'uppercase',
-      cursor: 'pointer', transition: 'all 0.2s'
+      letterSpacing: '0.04em', textTransform: 'uppercase',
+      cursor: 'pointer', transition: navTransition, touchAction: 'manipulation'
     };
   };
 
   return (
-    <div style={{ background: '#F7F8FC', minHeight: '100vh', paddingBottom: '130px' }}>
+    <div style={{
+      background: 'radial-gradient(circle at top left, rgba(249,115,22,0.08), transparent 25%), linear-gradient(180deg, #1B2431 0%, #121A24 100%)',
+      minHeight: '100dvh',
+      paddingBottom: 'calc(158px + env(safe-area-inset-bottom))',
+      color: '#FFFFFF'
+    }}>
 
       {/* ── HEADER ─────────────────────────────────────────────────── */}
       <header style={{
         display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-        padding: '10px 18px',
-        borderBottom: '1px solid rgba(229,231,235,0.8)',
-        background: 'rgba(255,255,255,0.88)',
-        backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)',
+        padding: '12px 18px',
+        borderBottom: '1px solid rgba(255,255,255,0.05)',
+        background: 'rgba(18,26,36,0.72)',
+        backdropFilter: 'blur(24px)', WebkitBackdropFilter: 'blur(24px)',
         position: 'sticky', top: 0, zIndex: 10
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <img
             src="/snaplead-logo.svg" alt="SnapLead"
-            style={{ width: 38, height: 38, borderRadius: '10px', flexShrink: 0, boxShadow: '0 2px 8px rgba(11,58,130,0.18)' }}
+            style={{ width: 38, height: 38, borderRadius: '12px', flexShrink: 0, boxShadow: '0 12px 28px rgba(0,0,0,0.22)' }}
           />
           <div>
             <div style={{
-              color: '#0B3A82', fontWeight: 800, fontSize: '19px',
-              lineHeight: 1.1, letterSpacing: '-0.02em',
-              fontFamily: 'Outfit, system-ui, sans-serif'
+              color: '#FFFFFF', fontWeight: 800, fontSize: '19px',
+              lineHeight: 1.1, letterSpacing: '0',
+              fontFamily: 'Inter, system-ui, sans-serif'
             }}>SnapLead</div>
             <div style={{
-              color: '#9CA3AF', fontSize: '10px', marginTop: '1px',
+              color: '#B6C0CF', fontSize: '10px', marginTop: '2px',
               letterSpacing: '0.04em', textTransform: 'uppercase', fontWeight: 600
             }}>Smart lead capture</div>
           </div>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <AndaraLabSeal />
+        <div style={{ display: 'flex', alignItems: 'center', gap: '22px' }}>
+          <img
+            src={andaraPoweredBy}
+            alt="Powered by AndaraLab"
+            className="andara-poweredby"
+          />
           <button
             onClick={() => setShowSettings(true)}
             style={{
-              width: 38, height: 38, borderRadius: '50%',
-              border: '1px solid rgba(229,231,235,0.9)',
-              background: 'rgba(248,249,251,0.7)', backdropFilter: 'blur(8px)',
+              width: 38, height: 38, borderRadius: '14px',
+              border: '1px solid rgba(255,255,255,0.07)',
+              background: 'rgba(42,54,71,0.72)', backdropFilter: 'blur(14px)',
+              color: '#FFFFFF',
               cursor: 'pointer', fontSize: '16px', flexShrink: 0,
+              transition: 'transform 180ms ease, background 180ms ease, border-color 180ms ease',
               display: 'flex', alignItems: 'center', justifyContent: 'center'
             }}
-          >⚙️</button>
+          ><Settings size={18} /></button>
         </div>
       </header>
 
       {/* ── MAIN CONTENT ───────────────────────────────────────────── */}
-      <main style={{ padding: '18px 16px 0' }}>
+      <main style={{ padding: '20px 16px 0', maxWidth: '720px', margin: '0 auto' }}>
         {currentView === 'dashboard'   && <Dashboard />}
         {currentView === 'manual'      && (
           <ManualCapture changeView={setCurrentView} setExtractedData={setExtractedData} />
@@ -180,34 +183,37 @@ function AppContent() {
 
       {/* ── BOTTOM NAV (double row) ─────────────────────────────────── */}
       <nav style={{
-        position: 'fixed', bottom: 0, left: 0, right: 0,
-        background: 'rgba(255,255,255,0.92)',
-        backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)',
-        borderTop: '1px solid rgba(229,231,235,0.7)',
-        padding: '10px 14px 20px',
+        position: 'fixed', bottom: 'calc(14px + env(safe-area-inset-bottom))', left: '50%',
+        transform: 'translateX(-50%)',
+        width: 'min(94vw, 560px)',
+        background: 'rgba(18,26,36,0.72)',
+        backdropFilter: 'blur(26px)', WebkitBackdropFilter: 'blur(26px)',
+        border: '1px solid rgba(255,255,255,0.07)',
+        borderRadius: '28px',
+        padding: '10px 12px calc(10px + env(safe-area-inset-bottom))',
         zIndex: 20,
-        boxShadow: '0 -4px 24px rgba(0,0,0,0.06)'
+        boxShadow: '0 22px 70px rgba(0,0,0,0.42), 0 0 40px rgba(249,115,22,0.06)'
       }}>
         {/* Row 1: Capture modes */}
         <div style={{ display: 'flex', gap: '8px', marginBottom: '8px' }}>
           <button onClick={() => setCurrentView('manual')} style={navBtn('manual', 'capture-side')}>
-            ✍️ {L('manual')}
+            <PenLine size={15} style={{ verticalAlign: '-3px', marginRight: '5px' }} /> {L('manual')}
           </button>
           <button onClick={() => setCurrentView('camera')} style={navBtn('camera', 'capture-main')}>
-            📷 {L('camera')}
+            <Camera size={15} style={{ verticalAlign: '-3px', marginRight: '5px' }} /> {L('camera')}
           </button>
           <button onClick={() => setCurrentView('qr')} style={navBtn('qr', 'capture-side')}>
-            <span style={{ fontSize: '13px' }}>⬛</span> {L('qr')}
+            <QrCode size={15} style={{ verticalAlign: '-3px', marginRight: '5px' }} /> {L('qr')}
           </button>
         </div>
 
         {/* Row 2: Main views */}
         <div style={{ display: 'flex', gap: '8px' }}>
           <button onClick={() => setCurrentView('dashboard')} style={navBtn('dashboard')}>
-            🏠 {L('dashboard')}
+            <Home size={15} style={{ verticalAlign: '-3px', marginRight: '5px' }} /> {L('dashboard')}
           </button>
           <button onClick={() => setCurrentView('reports')} style={navBtn('reports')}>
-            📊 {L('reports')}
+            <BarChart3 size={15} style={{ verticalAlign: '-3px', marginRight: '5px' }} /> {L('reports')}
           </button>
         </div>
       </nav>

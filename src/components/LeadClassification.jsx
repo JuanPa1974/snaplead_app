@@ -39,51 +39,52 @@ const LeadClassification = ({ data, changeView }) => {
   const labelStyle = {
     display: 'block',
     fontSize: '15px',
-    fontWeight: 700,
-    color: '#4B5563',
+    fontWeight: 500,
+    color: '#B6C0CF',
     marginBottom: '10px'
   };
 
   const selectStyle = {
     width: '100%',
     height: '50px',
-    borderRadius: '12px',
-    border: '1px solid #D1D5DB',
-    background: '#FFFFFF',
+    borderRadius: '16px',
+    border: '1px solid rgba(255,255,255,0.08)',
+    background: 'rgba(18,26,36,0.56)',
     padding: '0 14px',
     fontSize: '16px',
-    color: '#111827',
+    color: '#FFFFFF',
     outline: 'none'
   };
 
   const textareaStyle = {
     width: '100%',
     minHeight: '130px',
-    borderRadius: '12px',
-    border: '1px solid #D1D5DB',
-    background: '#FFFFFF',
+    borderRadius: '16px',
+    border: '1px solid rgba(255,255,255,0.08)',
+    background: 'rgba(18,26,36,0.56)',
     padding: '14px',
     fontSize: '16px',
-    color: '#111827',
+    color: '#FFFFFF',
     outline: 'none',
     resize: 'vertical'
   };
 
   const panelStyle = {
-    background: '#FFFFFF',
-    border: '1px solid #E5E7EB',
-    borderRadius: '18px',
-    padding: '20px',
+    background: 'rgba(42,54,71,0.78)',
+    border: '1px solid rgba(255,255,255,0.06)',
+    borderRadius: '24px',
+    padding: '22px',
     marginBottom: '18px',
-    boxShadow: '0 2px 10px rgba(0,0,0,0.04)'
+    boxShadow: '0 18px 48px rgba(0,0,0,0.20)',
+    backdropFilter: 'blur(18px)'
   };
 
   const buttonStyle = {
     width: '100%',
     height: '58px',
     border: 'none',
-    borderRadius: '16px',
-    background: 'linear-gradient(135deg, #1C5ED6, #0B3A82)',
+    borderRadius: '18px',
+    background: 'linear-gradient(135deg, #F97316, #D97706)',
     color: '#FFFFFF',
     fontSize: '18px',
     fontWeight: 800,
@@ -91,9 +92,9 @@ const LeadClassification = ({ data, changeView }) => {
     alignItems: 'center',
     justifyContent: 'center',
     gap: '10px',
-    boxShadow: '0 6px 18px rgba(28, 94, 214, 0.35)',
+    boxShadow: '0 16px 38px rgba(249, 115, 22, 0.24)',
     cursor: 'pointer',
-    letterSpacing: '0.5px'
+    letterSpacing: '0'
   };
 
   return (
@@ -102,7 +103,7 @@ const LeadClassification = ({ data, changeView }) => {
         style={{
           fontSize: '24px',
           fontWeight: 800,
-          color: '#0B3A82',
+          color: '#FFFFFF',
           marginBottom: '18px',
           lineHeight: 1.15
         }}
